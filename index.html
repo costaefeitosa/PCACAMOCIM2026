@@ -50,9 +50,54 @@ a:hover{text-decoration:underline}
 .htext h1 .yr{color:var(--bordo);font-weight:800}
 .htext p{margin:1px 0 0;font-size:12px;color:#1a2538;font-weight:500;opacity:.78}
 
-.topbar .meta{font-size:11px;color:#1a2538;text-align:right;line-height:1.4}
+.topbar .meta{font-size:11px;color:#1a2538;text-align:right;line-height:1.4;flex-shrink:0}
 .topbar .meta b{color:var(--bordo);font-weight:700}
-@media(max-width:760px){.htext h1{font-size:14px}.brand-text .name{font-size:14px}.utility nav a{margin-left:10px}}
+
+/* Mobile — empilha header em coluna */
+@media(max-width:760px){
+  .utility{flex-direction:column;align-items:flex-start;gap:6px;font-size:11px;padding:8px 16px}
+  .utility nav{display:flex;flex-wrap:wrap;gap:0}
+  .utility nav a{margin:0 14px 0 0}
+  .topbar{flex-direction:column;align-items:flex-start;padding:14px 16px;gap:10px}
+  .brand{align-self:center;gap:10px}
+  .divider{display:none}
+  .htext{width:100%;text-align:center}
+  .htext h1{font-size:18px;line-height:1.25;word-break:normal}
+  .htext p{font-size:12px}
+  .topbar .meta{align-self:center;text-align:center;font-size:11px}
+  .brand-text .name{font-size:15px}
+  .crest{width:64px;height:42px}
+  .wrap{margin:14px auto;padding:0 12px}
+  .card-b{padding:14px 12px}
+  .card-h{padding:13px 14px}
+  .card-h h2{font-size:14px}
+  .docs{flex-direction:column;align-items:stretch}
+  .docs label{margin:0 0 4px}
+  .docs select{width:100%;min-width:0}
+  .docs .btn{margin-left:0;width:100%;justify-content:center}
+  .kpi-grid{gap:10px;margin-bottom:16px}
+  .kpi{padding:14px}
+  .kpi .num{font-size:21px}
+  .split{gap:14px}
+  .chart-h{min-height:240px!important}
+  .modal{max-width:100%;border-radius:0;max-height:100vh}
+  .modal-bg{padding:0}
+  .modal-toolbar{flex-direction:column;align-items:stretch}
+  .modal-toolbar input,.modal-toolbar select{width:100%;min-width:0}
+  .modal-toolbar .dl{margin-left:0;width:100%}
+  .modal-toolbar .dl button{flex:1}
+  .dt thead th{font-size:10px;padding:8px 6px}
+  .dt tbody td{font-size:11.5px;padding:6px 8px}
+  .resumo-grid{padding:14px;gap:14px}
+  .foot-grid{padding:0 4px}
+  .foot-main{padding:24px 14px 0}
+  .foot-bot{padding:14px}
+}
+@media(max-width:420px){
+  .htext h1{font-size:16px}
+  .kpi .num{font-size:19px}
+  .kpi .lab{font-size:10px}
+}
 
 /* Container */
 .wrap{max-width:1320px;margin:24px auto;padding:0 24px}
@@ -500,10 +545,14 @@ new Chart(document.getElementById('ch-tri'),{
   data:{labels:dsTri.labels,datasets:[{label:'Valor (R$)',data:dsTri.values,backgroundColor:'#2c5db8',borderRadius:6}]},
   options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtBRL(c.parsed.y)}}},scales:{y:{ticks:{callback:v=>fmtBRLk(v)}}}}
 });
+const _mob = window.matchMedia('(max-width: 760px)').matches;
+const _shortSec = s => _mob
+  ? s.replace(/Secretaria/gi,'Sec.').replace(/Municipal/gi,'Mun.').replace(/de Direitos Humanos/gi,'/Dir. Humanos').replace(/Trânsito e Defesa Civil/gi,'/Trânsito').replace(/Conservação e Serviços Públicos/gi,'Conservação').replace(/Governança e Planejamento/gi,'Governança').replace(/Geral do Município/gi,'Geral').slice(0,30)
+  : (s.length>40?s.slice(0,38)+'…':s);
 new Chart(document.getElementById('ch-sec'),{
   type:'bar',
-  data:{labels:dsSec.labels.map(s=>s.length>40?s.slice(0,38)+'…':s),datasets:[{label:'Valor (R$)',data:dsSec.values,backgroundColor:'#163a72',borderRadius:4}]},
-  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>dsSec.labels[c[0].dataIndex],label:c=>fmtBRL(c.parsed.x)+' · '+dsSec.counts[c.dataIndex]+' itens'}}},scales:{x:{ticks:{callback:v=>fmtBRLk(v)}},y:{ticks:{font:{size:10.5}}}}}
+  data:{labels:dsSec.labels.map(_shortSec),datasets:[{label:'Valor (R$)',data:dsSec.values,backgroundColor:'#163a72',borderRadius:4}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>dsSec.labels[c[0].dataIndex],label:c=>fmtBRL(c.parsed.x)+' · '+dsSec.counts[c.dataIndex]+' itens'}}},scales:{x:{ticks:{callback:v=>fmtBRLk(v),font:{size:_mob?9:11}}},y:{ticks:{font:{size:_mob?9:10.5}}}}}
 });
 new Chart(document.getElementById('ch-pri'),{
   type:'doughnut',
