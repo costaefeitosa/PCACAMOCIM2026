@@ -53,20 +53,21 @@ a:hover{text-decoration:underline}
 .topbar .meta{font-size:11px;color:#1a2538;text-align:right;line-height:1.4;flex-shrink:0}
 .topbar .meta b{color:var(--bordo);font-weight:700}
 
-/* Mobile — empilha header em coluna */
+/* Mobile — header compacto em duas linhas */
 @media(max-width:760px){
-  .utility{flex-direction:column;align-items:flex-start;gap:6px;font-size:11px;padding:8px 16px}
-  .utility nav{display:flex;flex-wrap:wrap;gap:0}
-  .utility nav a{margin:0 14px 0 0}
-  .topbar{flex-direction:column;align-items:flex-start;padding:14px 16px;gap:10px}
-  .brand{align-self:center;gap:10px}
+  .utility{padding:6px 14px;font-size:10.5px;gap:8px}
+  .utility nav a{margin-left:12px}
+  .topbar{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"brand text" "meta meta";gap:4px 12px;padding:8px 14px;align-items:center}
+  .brand{grid-area:brand;align-self:center;gap:6px}
   .divider{display:none}
-  .htext{width:100%;text-align:center}
-  .htext h1{font-size:18px;line-height:1.25;word-break:normal}
-  .htext p{font-size:12px}
-  .topbar .meta{align-self:center;text-align:center;font-size:11px}
-  .brand-text .name{font-size:15px}
-  .crest{width:64px;height:42px}
+  .htext{grid-area:text;min-width:0;text-align:left}
+  .htext h1{font-size:15px;line-height:1.18;word-break:normal;font-weight:700}
+  .htext p{font-size:10.5px;margin-top:1px;line-height:1.3}
+  .topbar .meta{grid-area:meta;text-align:right;font-size:10px;line-height:1.35;color:#3a2538;opacity:.85}
+  .topbar .meta div{display:inline}
+  .topbar .meta div+div::before{content:" · "}
+  .brand-text{display:none}
+  .crest{width:48px;height:32px}
   .wrap{margin:14px auto;padding:0 12px}
   .card-b{padding:14px 12px}
   .card-h{padding:13px 14px}
@@ -94,7 +95,11 @@ a:hover{text-decoration:underline}
   .foot-bot{padding:14px}
 }
 @media(max-width:420px){
-  .htext h1{font-size:16px}
+  .htext h1{font-size:14px}
+  .htext p{font-size:10px}
+  .topbar{padding:7px 12px}
+  .crest{width:42px;height:28px}
+  .topbar .meta{font-size:9.5px}
   .kpi .num{font-size:19px}
   .kpi .lab{font-size:10px}
 }
